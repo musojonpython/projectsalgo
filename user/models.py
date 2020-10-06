@@ -23,7 +23,11 @@ class CustomUserManager(BaseUserManager):
         return self._create_user(phone_number, password, **extra_fields)
 
     def create_superuser(self, phone_number, password=None, **extra_fields):
-        return self._create_user(phone_number, password, **extra_fields)
+        user = self._create_user(phone_number, password, **extra_fields)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
 
 
 class User(AbstractBaseUser, PermissionsMixin):
