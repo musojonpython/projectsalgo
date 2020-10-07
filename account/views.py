@@ -41,4 +41,10 @@ class LoginUserAPIView(APIView):
             return Response({'error': 'Invalid Credentials'})
         else:
             token, _ = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key, 'user_id': user.id})
+            role = {
+                'is_director':user.is_director,
+                'is_accountant':user.is_accountant,
+                'is_warehouseman':user.is_warehouseman,
+                'is_staff':user.is_staff
+            }
+            return Response({'token': token.key, 'user_id': user.id, 'role':role})
